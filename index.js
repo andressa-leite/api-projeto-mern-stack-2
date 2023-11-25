@@ -10,7 +10,7 @@ import conectDatabase from "./src/database/db.js";
 import dotenv from "dotenv"
 dotenv.config();
 /* ********************************** */
-import swaggerRoute from "./src/routes/swagger.route.js";
+import swaggerRoute from "./src/routes/swagger.route.cjs";
 /* ********************************** */
 
 const port = process.env.PORT || 3000
