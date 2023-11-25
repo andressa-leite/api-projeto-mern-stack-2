@@ -9,7 +9,7 @@ import newsRoute from "./src/routes/news.route.js";
 import conectDatabase from "./src/database/db.js";
 import dotenv from "dotenv"
 dotenv.config();
-/* ********************************** */
+/* ********************************** */g
 import swaggerRoute from "./src/routes/swagger.route.cjs";
 /* ********************************** */
 
