@@ -10,7 +10,7 @@
     },
     "servers": [
       {
-        "url": "https://api-breakingnews.onrender.com",
+        "url": "https://api-breaking-news-qclh.onrender.com",
         "description": "Render"
       },
   
