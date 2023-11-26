@@ -221,7 +221,7 @@
         "post": {
           "summary": "Create a new post",
           "description": "Route responsible for creating a new Post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "requestBody": {
             "content": {
@@ -269,7 +269,7 @@
         "get": {
           "summary": "Search all posts",
           "description": "Route responsible for fetching all posts",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "parameters": [
             {
               "in": "query",
@@ -306,7 +306,7 @@
         "get": {
           "summary": "Search top post",
           "description": "Route responsible for fetching top post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "responses": {
             "400": {
               "description": "Not Found"
@@ -329,7 +329,7 @@
         "get": {
           "summary": "Search posts by title",
           "description": "Route responsible for fetching the posts that match the title sent via query params",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "parameters": [
             {
               "in": "query",
@@ -362,7 +362,7 @@
         "patch": {
           "summary": "Search post by id",
           "description": "Route responsible for fetching post by id",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "parameters": [
             {
@@ -398,7 +398,7 @@
         "get": {
           "summary": "Search posts by use id",
           "description": "Route responsible for fetching posts by use id",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "responses": {
             "400": {
               "description": "Not Found"
@@ -426,7 +426,7 @@
         "patch": {
           "summary": "Update a post",
           "description": "Route responsible for updating a Post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "parameters": [
             {
@@ -480,7 +480,7 @@
         "delete": {
           "summary": "Delete a post",
           "description": "Route responsible for deleting a Post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "parameters": [
             {
@@ -508,7 +508,7 @@
         "patch": {
           "summary": "Like a post",
           "description": "Route responsible for liking a post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "parameters": [
             {
@@ -536,7 +536,7 @@
         "patch": {
           "summary": "Comment on a post",
           "description": "Route responsible for commenting on a post",
-          "tags": ["Post"],
+          "tags": ["Posts"],
           "security": [{ "bearerAuth": [] }],
           "parameters": [
             {
