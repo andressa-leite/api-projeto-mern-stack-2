@@ -3,15 +3,15 @@ const userController = require("../controllers/user.controller");
 const { validId, validUser } = require("../middlewares/global.middlewares"); */
 
 import express from 'express';
-const router = express.Router();
+const userRouter = express.Router();
 import userController from '../controllers/user.controller.js';
 import {validId, validUser}  from '../middlewares/global.middlewares.js';
 
 
-router.post("/", userController.create);
-router.get("/", userController.findAll);
-router.get("/:id", validId, validUser, userController.findById);
-router.patch("/:id",  validId, validUser, userController.update);
+userRouter.post("/", userController.create);
+userRouter.get("/", userController.findAll);
+userRouter.get("/:id", validId, validUser, userController.findById);
+userRouter.patch("/:id",  validId, validUser, userController.update);
 
 /* module.exports = route; */
-export default router
+export default userRouter;

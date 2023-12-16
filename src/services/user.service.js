@@ -1,6 +1,6 @@
-import userRepositories from "../repositories/user.repositories";
-import authService from "../services/auth.service";
-import bcrypt from "bcrypt";
+import userRepositories from "../repositories/user.repositories.js";
+import authService from "../services/auth.service.js";
+import bcrypt from "bcryptjs";
 
 const createService = async (body) => {
 const body = { name, username, email, password, avatar }
