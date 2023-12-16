@@ -1,18 +1,18 @@
 import {
   createService,
   findAllService,
-  countNews,
+  countPost,
   findByIdService,
-  topNewsService,
+  topPostService,
   searchByTitleService,
   byUserService,
   updateService,
   eraseService,
-  likeNewsService,
-  deleteLikeNewsService,
+  likePostService,
+  deleteLikePostService,
   addCommentService,
   deleteCommentService,
-} from "../services/news.service.js";
+} from "../services/post.service.js";
 
 const create = async (req, res) => {
   try {
@@ -48,8 +48,8 @@ const findAll = async (req, res) => {
       offset = 0;
     }
 
-    const news = await findAllService(offset, limit);
-    const total = await countNews();
+    const post = await findAllService(offset, limit);
+    const total = await countPost();
     const currentUrl = req.baseUrl;
 
     const next = offset + limit;
@@ -62,9 +62,9 @@ const findAll = async (req, res) => {
         ? `${currentUrl}?limit=${limit}&offset={previous}`
         : null;
 
-    /* const news = await findAllService(); */
-    if (news.length == 0) {
-      return res.status(400).send({ message: "There are no news registered" });
+    /* const post = await findAllService(); */
+    if (post.length == 0) {
+      return res.status(400).send({ message: "There are no posts registered" });
     }
     res.send({
       nextUrl,
@@ -72,8 +72,8 @@ const findAll = async (req, res) => {
       limit,
       offset,
       total,
-      //item = newsItem
-      results: news.map((item) => ({
+      //item = postItem
+      results: post.map((item) => ({
         id: item._id,
         title: item.title,
         text: item.text,
@@ -93,18 +93,18 @@ const findAll = async (req, res) => {
 const findById = async (req, res) => {
   try {
     const { id } = req.params;
-    const news = await findByIdService(id);
+    const post = await findByIdService(id);
     res.send({
-      news: {
-        id: news._id,
-        title: news.title,
-        text: news.text,
-        banner: news.banner,
-        likes: news.likes,
-        comments: news.comments,
-        name: news.user.name,
-        username: news.user.username,
-        userAvatar: news.user.avatar,
+      post: {
+        id: post._id,
+        title: post.title,
+        text: post.text,
+        banner: post.banner,
+        likes: post.likes,
+        comments: post.comments,
+        name: post.user.name,
+        username: post.user.username,
+        userAvatar: post.user.avatar,
       },
     });
   } catch (err) {
@@ -112,23 +112,23 @@ const findById = async (req, res) => {
   }
 };
 
-const topNews = async (req, res) => {
+const topPost = async (req, res) => {
   try {
-    const news = await topNewsService();
-    if (!news) {
-      return res.status(400).send({ message: "There are no news registered" });
+    const post = await topPostService();
+    if (!post) {
+      return res.status(400).send({ message: "There are no posts registered" });
     }
     res.send({
-      news: {
-        id: news._id,
-        title: news.title,
-        text: news.text,
-        banner: news.banner,
-        likes: news.likes,
-        comments: news.comments,
-        name: news.user.name,
-        username: news.user.username,
-        userAvatar: news.user.avatar,
+      post: {
+        id: post._id,
+        title: post.title,
+        text: post.text,
+        banner: post.banner,
+        likes: post.likes,
+        comments: post.comments,
+        name: post.user.name,
+        username: post.user.username,
+        userAvatar: post.user.avatar,
       },
     });
   } catch (err) {
@@ -139,15 +139,15 @@ const topNews = async (req, res) => {
 const searchByTitle = async (req, res) => {
   try {
     const { title } = req.query;
-    const news = await searchByTitleService(title);
+    const post = await searchByTitleService(title);
 
-    if (news.length === 0) {
+    if (post.length === 0) {
       return res
         .sendStatus(400)
-        .send({ message: "no news with the same title have been found" });
+        .send({ message: "no post with the same title have been found" });
     }
     return res.send({
-      results: news.map((item) => ({
+      results: post.map((item) => ({
         id: item._id,
         title: item.title,
         text: item.text,
@@ -167,10 +167,10 @@ const searchByTitle = async (req, res) => {
 const byUser = async (req, res) => {
   try {
     const id = req.userId; //não precisa desconstruir pq vem do authmiddleware e o token tem o id dentro dele
-    const news = await byUserService(id);
+    const post = await byUserService(id);
 
     return res.send({
-      results: news.map((item) => {
+      results: post.map((item) => {
         return {
           id: item._id,
           title: item.title,
@@ -195,17 +195,17 @@ const update = async (req, res) => {
     const { id } = req.params;
 
     //console.log(id)
-    const news = await findByIdService(id);
-    // o "news.user._id" é da news que eu busquei e o "req.userId" é do usuário que está logado
-    //if (news.user._id !== req.userId) {
-    console.log(typeof news.user._id, typeof req.userId);
-    if (String(news.user._id) !== req.userId) {
+    const post = await findByIdService(id);
+    // o "post.user._id" é da post que eu busquei e o "req.userId" é do usuário que está logado
+    //if (post.user._id !== req.userId) {
+    console.log(typeof post.user._id, typeof req.userId);
+    if (String(post.user._id) !== req.userId) {
       return res.status(400).send({
         message: "It can only be deleted by the author of this post.",
       });
     }
     const data = await eraseService(id);
-    res.status(200).send({ message: "News Deleted", data });
+    res.status(200).send({ message: "Post Deleted", data });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -216,32 +216,32 @@ const erase = async (req, res) => {
     //const { title, text, banner } = req.body;
     const { id } = req.params;
 
-    const news = await findByIdService(id);
-    // o "news.user._id" é da news que eu busquei e o "req.userId" é do usuário que está logado
-    //if (news.user._id !== req.userId) {
-    //console.log(typeof news.user._id, typeof req.userId);
-    if (String(news.user._id) !== req.userId) {
+    const post = await findByIdService(id);
+    // o "post.user._id" é da post que eu busquei e o "req.userId" é do usuário que está logado
+    //if (post.user._id !== req.userId) {
+    //console.log(typeof post.user._id, typeof req.userId);
+    if (String(post.user._id) !== req.userId) {
       return res.status(400).send({
         message: "It can only be deleted by the author of this post.",
       });
     }
     await eraseService(id);
-    return res.send("News deleted Successfully");
+    return res.send("Post deleted Successfully");
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
 
-const likeNews = async (req, res) => {
+const likePost = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.userId;
 
-    const newsLiked = await likeNewsService(id, userId);
-    console.log(newsLiked);
+    const postLiked = await likePostService(id, userId);
+    console.log(postLiked);
 
-    if (!newsLiked) {
-      await deleteLikeNewsService(id, userId);
+    if (!postLiked) {
+      await deleteLikePostService(id, userId);
       return res.status(200).send({ message: "Like removed successfully" });
     }
     res.send({ message: "like received successfully" });
@@ -268,11 +268,11 @@ const addComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   try {
-    const { idNews, idComment } = req.params;
+    const { idPost, idComment } = req.params;
     const userId = req.userId;
 
     const deletedComment = await deleteCommentService(
-      idNews,
+      idPost,
       idComment,
       userId
     );
@@ -287,13 +287,13 @@ const deleteComment = async (req, res) => {
 export {
   create,
   findAll,
-  topNews,
+  topPost,
   findById,
   searchByTitle,
   byUser,
   update,
   erase,
-  likeNews,
+  likePost,
   addComment,
   deleteComment,
 };
